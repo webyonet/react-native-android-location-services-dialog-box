@@ -1,12 +1,12 @@
 {
-  "name": "ShowLocationServicesDialogBox",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
-  },
-  "dependencies": {
-    "react": "15.2.0",
-    "react-native": "0.28.0"
+  "name": "react-native-android-location-services-dialog-box",
+  "version": "1.0.0",
+  "description": "A react-native component for Google AdMob banners and interstitials",
+  "author": "webyonet <webyonet@hotmail.com>",
+  "main": "index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:webyonet/react-native-android-location-services-dialog-box.git"
   }
 }
