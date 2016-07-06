@@ -1,6 +1,7 @@
 android/.idea/
 android/gradle/
 android/.gradle/
+android/build/
 android/gradlew
 android/gradlew.bat
 android/local.properties
