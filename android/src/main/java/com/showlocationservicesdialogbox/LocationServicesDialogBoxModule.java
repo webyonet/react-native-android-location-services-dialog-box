@@ -2,17 +2,24 @@ package com.showlocationservicesdialogbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.provider.Settings;
 import com.facebook.react.bridge.*;
 
-import static android.content.Context.LOCATION_SERVICE;
+public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener{
+    private Promise promiseCallback;
+    private ReadableMap map;
+    private Activity currentActivity;
 
-public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule {
     public LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        checkLocationService(true);
     }
 
     @Override
@@ -21,34 +28,43 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     }
 
     @ReactMethod
-    public void checkLocationServicesIsEnabled(ReadableMap textMap, Callback callback) {
-        Activity currentActivity = getCurrentActivity();
+    public void checkLocationServicesIsEnabled(ReadableMap configMap, Promise promise) {
+        promiseCallback = promise;
+        map = configMap;
+        currentActivity = getCurrentActivity();
+        checkLocationService(false);
+    }
 
-        LocationManager locationManager = (LocationManager) currentActivity.getSystemService(LOCATION_SERVICE);
+    private void checkLocationService(Boolean activityResult) {
+        LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
+
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            displayPromptForEnablingGPS(currentActivity, textMap, callback);
+            if (activityResult) {
+                promiseCallback.reject(new Throwable("disabled"));
+            } else {
+                displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
+            }
         } else {
-            callback.invoke("enabled");
+            promiseCallback.resolve("enabled");
         }
     }
 
-    private static void displayPromptForEnablingGPS(final Activity activity, final ReadableMap textMap, final Callback callback) {
+    private static void displayPromptForEnablingGPS(final Activity activity, final ReadableMap configMap, final Promise promise) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+        final String action = android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
-        builder.setMessage(textMap.getString("message"))
-                .setPositiveButton(textMap.getString("ok"),
+        builder.setMessage(configMap.getString("message"))
+                .setPositiveButton(configMap.getString("ok"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int id) {
-                                activity.startActivity(new Intent(action));
-                                callback.invoke("ok");
+                                activity.startActivityForResult(new Intent(action), 1);
                                 dialogInterface.dismiss();
                             }
                         })
-                .setNegativeButton(textMap.getString("cancel"),
+                .setNegativeButton(configMap.getString("cancel"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int id) {
-                                callback.invoke("cancel");
+                                promise.reject(new Throwable("disabled"));
                                 dialogInterface.cancel();
                             }
                         });
