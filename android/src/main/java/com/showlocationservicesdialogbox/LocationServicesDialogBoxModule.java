@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.text.Html;
 import com.facebook.react.bridge.*;
 
 public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener{
@@ -50,7 +51,7 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final String action = android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
-        builder.setMessage(configMap.getString("message"))
+        builder.setMessage(Html.fromHtml(configMap.getString("message")))
                 .setPositiveButton(configMap.getString("ok"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int id) {
