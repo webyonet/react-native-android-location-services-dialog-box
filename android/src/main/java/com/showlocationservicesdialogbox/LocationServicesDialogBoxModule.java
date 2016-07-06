@@ -15,11 +15,8 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
 
     public LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
-    }
+        reactContext.addActivityEventListener(this);
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        checkLocationService(true);
     }
 
     @Override
@@ -69,5 +66,10 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
                             }
                         });
         builder.create().show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        checkLocationService(true);
     }
 }
