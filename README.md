@@ -3,6 +3,8 @@
 
 A react-native component for turn on the dialog box from android location services
 
+[![npm version](https://badge.fury.io/js/react-native-android-location-services-dialog-box.svg)](https://badge.fury.io/js/react-native-android-location-services-dialog-box)
+
 ### Installation
 
 #### With [`rnpm`](https://github.com/rnpm/rnpm) (recommended)
