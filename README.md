@@ -112,7 +112,7 @@ class SampleApp extends Component {
 ### Props
 
 | Prop             | Type        | Description                    |
-|------------------|----------------------------------------------|
+|------------------|-------------|--------------------------------|
 |`message`         |`HTML`       |Dialog box content text         |
 |`ok`              |`String`     |Dialog box ok button text       |
 |`cancel`          |`String`     |Dialog box cancel button text   |
