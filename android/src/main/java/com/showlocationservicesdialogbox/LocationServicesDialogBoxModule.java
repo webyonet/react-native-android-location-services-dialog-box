@@ -17,8 +17,10 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     public LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
         reactContext.addActivityEventListener(this);
-
     }
+    
+    @Override
+    public void onNewIntent(Intent intent) {}
 
     @Override
     public String getName() {
@@ -34,6 +36,9 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     }
 
     private void checkLocationService(Boolean activityResult) {
+        // Robustness check
+        if (currentActivity == null || map == null || promiseCallback == null)
+            return;
         LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -70,7 +75,8 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        currentActivity = activity;
         checkLocationService(true);
     }
 }
