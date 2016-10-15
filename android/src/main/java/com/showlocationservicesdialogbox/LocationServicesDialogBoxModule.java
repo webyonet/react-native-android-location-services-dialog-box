@@ -9,18 +9,19 @@ import android.location.LocationManager;
 import android.text.Html;
 import com.facebook.react.bridge.*;
 
-public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener{
+class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener {
     private Promise promiseCallback;
     private ReadableMap map;
     private Activity currentActivity;
 
-    public LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
+    LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
         reactContext.addActivityEventListener(this);
     }
-    
+
     @Override
-    public void onNewIntent(Intent intent) {}
+    public void onNewIntent(Intent intent) {
+    }
 
     @Override
     public String getName() {
@@ -37,8 +38,7 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
 
     private void checkLocationService(Boolean activityResult) {
         // Robustness check
-        if (currentActivity == null || map == null || promiseCallback == null)
-            return;
+        if (currentActivity == null || map == null || promiseCallback == null) return;
         LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {

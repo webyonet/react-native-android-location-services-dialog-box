@@ -59,12 +59,11 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
     ok: "YES",
     cancel: "NO"
-}).then((success) => {
-        console.log(success); // success => "enabled"
-    }.bind(this)
+}).then(function(success) {
+    console.log(success); // success => "enabled"
 ).catch((error) => {
     console.log(error.message); // error.message => "disabled"
-})
+});
 ```
 
 ### Examples `ES6`
@@ -89,15 +88,15 @@ class SampleApp extends Component {
             message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
             ok: "YES",
             cancel: "NO"
-        }).then((success:String) => {
-                navigator.geolocation.getCurrentPosition((position:Object) => {
+        }).then(function(success) {
+                navigator.geolocation.getCurrentPosition((position) => {
                     let initialPosition = JSON.stringify(position);
                     this.setState({ initialPosition });
-                }, (error:Object) => console.log(error), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+                }, error => console.log(error), { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
             }.bind(this)
-        ).catch((error:String) => {
+        ).catch((error) => {
             console.log(error.message);
-        })
+        });
     }
 
     render() {
