@@ -35,7 +35,7 @@ dependencies {
 }
 ```
 
-**MainActivity.java**
+**MainApplication.java**
 
 On top, where imports are:
 ```java
