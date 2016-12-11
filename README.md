@@ -46,7 +46,7 @@ Under `protected List<ReactPackage> getPackages() {`:
 ```java
   return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
-    new LocationServicesDialogBoxPackage()
+    new LocationServicesDialogBoxPackage() // <== this
   );
 ```
 
