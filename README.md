@@ -7,10 +7,10 @@ A react-native component for turn on the dialog box from android location servic
 
 ### Installation
 
-#### With [`rnpm`](https://github.com/rnpm/rnpm) (recommended)
+#### Mostly automatic installation (recommended)
 
 1. `npm install react-native-android-location-services-dialog-box --save`
-2. `rnpm link react-native-android-location-services-dialog-box`
+2. `react-native link react-native-android-location-services-dialog-box`
 
 #### Manual Installation
 
@@ -61,9 +61,32 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     cancel: "NO"
 }).then(function(success) {
     console.log(success); // success => "enabled"
-).catch((error) => {
+}).catch((error) => {
     console.log(error.message); // error.message => "disabled"
 });
+```
+
+### Usage And Example For Async Method `ES6`
+
+```javascript
+import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
+
+export default class LocationServiceTestPage extends Component {
+    constructor(props){
+        super(props);
+        this.checkIsLocation();
+    }
+    
+    async checkIsLocation():Boolean {
+        let check = await LocationServicesDialogBox.checkLocationServicesIsEnabled({
+            message: "Use Location ?",
+            ok: "YES",
+            cancel: "NO"
+        }).catch(error => error);
+
+        return Object.is(check, "enabled");
+    } 
+}
 ```
 
 ### Examples `ES6`
@@ -71,7 +94,6 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
 import React, { Component } from 'react';
 import {
     AppRegistry,
-    StyleSheet,
     Text,
     View
 } from 'react-native';
@@ -79,11 +101,11 @@ import {
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 class SampleApp extends Component {
-    state:Object = {
+    state = {
         initialPosition: 'unknown',
     };
 
-    componentDidMount():void {
+    componentDidMount() {
         LocationServicesDialogBox.checkLocationServicesIsEnabled({
             message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
             ok: "YES",
@@ -108,6 +130,8 @@ class SampleApp extends Component {
             </View>
         );
     }
+}
+AppRegistry.registerComponent('SampleApp', () => SampleApp);
 ```
 
 ### Props
