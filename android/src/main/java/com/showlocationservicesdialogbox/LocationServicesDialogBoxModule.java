@@ -13,6 +13,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     private Promise promiseCallback;
     private ReadableMap map;
     private Activity currentActivity;
+    private static final int ENABLE_LOCATION_SERVICES = 1009;
 
     LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -60,7 +61,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                 .setPositiveButton(configMap.getString("ok"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int id) {
-                                activity.startActivityForResult(new Intent(action), 1);
+                                activity.startActivityForResult(new Intent(action), ENABLE_LOCATION_SERVICES);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -76,7 +77,9 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        currentActivity = activity;
-        checkLocationService(true);
+        if(requestCode == ENABLE_LOCATION_SERVICES) {
+            currentActivity = activity;
+            checkLocationService(true);
+        }
     }
 }
