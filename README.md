@@ -147,3 +147,6 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 | Name                               | Return             |
 |------------------------------------|--------------------|
 |`checkLocationServicesIsEnabled`    | Promise            |
+
+
+[![NPM](https://nodei.co/npm/react-native-android-location-services-dialog-box.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-android-location-services-dialog-box/)
