@@ -38,7 +38,6 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     }
 
     private void checkLocationService(Boolean activityResult) {
-        // Robustness check
         if (currentActivity == null || map == null || promiseCallback == null) return;
         LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
 
