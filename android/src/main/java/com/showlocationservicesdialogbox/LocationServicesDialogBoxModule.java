@@ -43,7 +43,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
 
         Boolean isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!map.hasKey("enableHighAccuracy") || map.getBoolean("enableHighAccuracy")) {
-            isEnabled = isEnabled && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            isEnabled = isEnabled || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         }
         if (!isEnabled) {
             if (activityResult) {
