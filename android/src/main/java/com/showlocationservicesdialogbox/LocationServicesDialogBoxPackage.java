@@ -17,10 +17,10 @@ public class LocationServicesDialogBoxPackage implements ReactPackage {
         modules.add(new LocationServicesDialogBoxModule(reactApplicationContext));
         return modules;
     }
-    
+
     // Deprecated RN 0.47
-    public List<Class<? extends JavaScriptModule>> createJSModules() {		
-        return Collections.emptyList();		
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
     }
 
     @Override
