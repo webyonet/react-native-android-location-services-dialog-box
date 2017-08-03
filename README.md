@@ -60,7 +60,7 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     ok: "YES",
     cancel: "NO"
 }).then(function(success) {
-    console.log(success); // success => "enabled"
+    console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
 }).catch((error) => {
     console.log(error.message); // error.message => "disabled"
 });
@@ -84,7 +84,7 @@ export default class LocationServiceTestPage extends Component {
             cancel: "NO"
         }).catch(error => error);
 
-        return Object.is(check, "enabled");
+        return Object.is(check.enabled, "enabled");
     } 
 }
 ```
@@ -111,6 +111,7 @@ class SampleApp extends Component {
             ok: "YES",
             cancel: "NO"
         }).then(function(success) {
+            // success => {alreadyEnabled: true, enabled: true, status: "enabled"} 
                 navigator.geolocation.getCurrentPosition((position) => {
                     let initialPosition = JSON.stringify(position);
                     this.setState({ initialPosition });
@@ -144,9 +145,9 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 
 ### Methods
 
-| Name                               | Return             |
-|------------------------------------|--------------------|
-|`checkLocationServicesIsEnabled`    | Promise            |
+| Name                               | Return             | Return Value     |
+|------------------------------------|--------------------|------------------|
+|`checkLocationServicesIsEnabled`    | Promise            | Object           |
 
 
 [![NPM](https://nodei.co/npm/react-native-android-location-services-dialog-box.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-android-location-services-dialog-box/)

@@ -40,6 +40,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     private void checkLocationService(Boolean activityResult) {
         if (currentActivity == null || map == null || promiseCallback == null) return;
         LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
+        WritableMap result = Arguments.createMap();
 
         Boolean isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!map.hasKey("enableHighAccuracy") || map.getBoolean("enableHighAccuracy")) {
@@ -52,7 +53,11 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                 displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
             }
         } else {
-            promiseCallback.resolve("enabled");
+            result.putString("status", "enabled");
+            result.putBoolean("enabled", true);
+            result.putBoolean("alreadyEnabled", !activityResult);
+
+            promiseCallback.resolve(result);
         }
     }
 
@@ -80,7 +85,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if(requestCode == ENABLE_LOCATION_SERVICES) {
+        if (requestCode == ENABLE_LOCATION_SERVICES) {
             currentActivity = activity;
             checkLocationService(true);
         }
