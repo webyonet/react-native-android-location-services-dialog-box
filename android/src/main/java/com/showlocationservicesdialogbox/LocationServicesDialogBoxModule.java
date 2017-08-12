@@ -41,6 +41,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     @ReactMethod
     public void forceCloseDialog() {
         if (alertDialog != null) {
+            promiseCallback.reject(new Throwable("disabled"));
             alertDialog.cancel();
         }
     }
