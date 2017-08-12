@@ -58,7 +58,9 @@ import LocationServicesDialogBox from "react-native-android-location-services-di
 LocationServicesDialogBox.checkLocationServicesIsEnabled({
     message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
     ok: "YES",
-    cancel: "NO"
+    cancel: "NO",
+    enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+    showDialog: true // false => Opens the Location access page directly
 }).then(function(success) {
     console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
 }).catch((error) => {
@@ -81,7 +83,9 @@ export default class LocationServiceTestPage extends Component {
         let check = await LocationServicesDialogBox.checkLocationServicesIsEnabled({
             message: "Use Location ?",
             ok: "YES",
-            cancel: "NO"
+            cancel: "NO",
+            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+            showDialog: true // false => Opens the Location access page directly
         }).catch(error => error);
 
         return Object.is(check.enabled, "enabled");
@@ -109,7 +113,9 @@ class SampleApp extends Component {
         LocationServicesDialogBox.checkLocationServicesIsEnabled({
             message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
             ok: "YES",
-            cancel: "NO"
+            cancel: "NO",
+            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+            showDialog: true // false => Opens the Location access page directly
         }).then(function(success) {
             // success => {alreadyEnabled: true, enabled: true, status: "enabled"} 
                 navigator.geolocation.getCurrentPosition((position) => {
@@ -137,11 +143,13 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 
 ### Props
 
-| Prop             | Type        | Description                    |
-|------------------|-------------|--------------------------------|
-|`message`         |`HTML`       |Dialog box content text         |
-|`ok`              |`String`     |Dialog box ok button text       |
-|`cancel`          |`String`     |Dialog box cancel button text   |
+| Prop                              | Type        | Default     | Description                                    |
+|-----------------------------------|-------------|-------------|------------------------------------------------|
+|`message`                          |`HTML`       |`null`       |Dialog box content text                         |
+|`ok`                               |`String`     |`null`       |Dialog box ok button text                       |
+|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                   |
+|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)   |
+|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box      |
 
 ### Methods
 

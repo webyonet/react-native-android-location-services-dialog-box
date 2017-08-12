@@ -46,11 +46,16 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         if (!map.hasKey("enableHighAccuracy") || map.getBoolean("enableHighAccuracy")) {
             isEnabled = isEnabled || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         }
+
         if (!isEnabled) {
             if (activityResult) {
                 promiseCallback.reject(new Throwable("disabled"));
             } else {
-                displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
+                if (!map.hasKey("showDialog") || map.getBoolean("showDialog")) {
+                    displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
+                } else {
+                    newActivity(currentActivity);
+                }
             }
         } else {
             result.putString("status", "enabled");
@@ -63,13 +68,12 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
 
     private static void displayPromptForEnablingGPS(final Activity activity, final ReadableMap configMap, final Promise promise) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        final String action = android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
         builder.setMessage(Html.fromHtml(configMap.getString("message")))
                 .setPositiveButton(configMap.getString("ok"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int id) {
-                                activity.startActivityForResult(new Intent(action), ENABLE_LOCATION_SERVICES);
+                                newActivity(activity);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -81,6 +85,11 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                             }
                         });
         builder.create().show();
+    }
+
+    private static void newActivity(final Activity activity) {
+        final String action = android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+        activity.startActivityForResult(new Intent(action), ENABLE_LOCATION_SERVICES);
     }
 
     @Override
