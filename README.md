@@ -53,6 +53,7 @@ Under `protected List<ReactPackage> getPackages() {`:
 ### Usage
 
 ```javascript
+import { BackHandler } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 LocationServicesDialogBox.checkLocationServicesIsEnabled({
@@ -66,17 +67,25 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
 }).catch((error) => {
     console.log(error.message); // error.message => "disabled"
 });
+
+BackHandler.addEventListener('hardwareBackPress', () => {
+   LocationServicesDialogBox.forceCloseDialog();
+});
 ```
 
 ### Usage And Example For Async Method `ES6`
 
 ```javascript
+import { BackHandler } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 export default class LocationServiceTestPage extends Component {
     constructor(props){
         super(props);
         this.checkIsLocation();
+        BackHandler.addEventListener('hardwareBackPress', () => {
+           LocationServicesDialogBox.forceCloseDialog();
+        });
     }
     
     async checkIsLocation():Boolean {
@@ -99,7 +108,8 @@ import React, { Component } from 'react';
 import {
     AppRegistry,
     Text,
-    View
+    View,
+    BackHandler
 } from 'react-native';
 
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
@@ -125,6 +135,10 @@ class SampleApp extends Component {
             }.bind(this)
         ).catch((error) => {
             console.log(error.message);
+        });
+        
+        BackHandler.addEventListener('hardwareBackPress', () => {
+               LocationServicesDialogBox.forceCloseDialog();
         });
     }
 
@@ -156,6 +170,7 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 | Name                               | Return             | Return Value     |
 |------------------------------------|--------------------|------------------|
 |`checkLocationServicesIsEnabled`    | Promise            | Object           |
+|`forceCloseDialog`                  | void               | -                |
 
 
 [![NPM](https://nodei.co/npm/react-native-android-location-services-dialog-box.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-android-location-services-dialog-box/)

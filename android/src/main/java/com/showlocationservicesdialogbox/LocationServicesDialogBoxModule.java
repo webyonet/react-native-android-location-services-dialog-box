@@ -14,6 +14,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     private ReadableMap map;
     private Activity currentActivity;
     private static final int ENABLE_LOCATION_SERVICES = 1009;
+    private static AlertDialog alertDialog;
 
     LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -35,6 +36,13 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         map = configMap;
         currentActivity = getCurrentActivity();
         checkLocationService(false);
+    }
+
+    @ReactMethod
+    public void forceCloseDialog() {
+        if (alertDialog != null) {
+            alertDialog.cancel();
+        }
     }
 
     private void checkLocationService(Boolean activityResult) {
@@ -84,7 +92,9 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                                 dialogInterface.cancel();
                             }
                         });
-        builder.create().show();
+
+        alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private static void newActivity(final Activity activity) {
