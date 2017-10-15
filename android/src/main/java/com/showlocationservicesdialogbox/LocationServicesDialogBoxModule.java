@@ -56,7 +56,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
             isEnabled = isEnabled || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         }
 
-        if (!isEnabled) {
+        if (!isEnabled && (!map.hasKey("openLocationServices") || map.getBoolean("openLocationServices"))) {
             if (activityResult) {
                 promiseCallback.reject(new Throwable("disabled"));
             } else {
