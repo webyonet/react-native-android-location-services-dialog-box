@@ -97,7 +97,7 @@ export default class LocationServiceTestPage extends Component {
             showDialog: true // false => Opens the Location access page directly
         }).catch(error => error);
 
-        return Object.is(check.enabled, "enabled");
+        return Object.is(check.status, "enabled");
     } 
 }
 ```
@@ -157,13 +157,13 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 
 ### Props
 
-| Prop                              | Type        | Default     | Description                                    |
-|-----------------------------------|-------------|-------------|------------------------------------------------|
-|`message`                          |`HTML`       |`null`       |Dialog box content text                         |
-|`ok`                               |`String`     |`null`       |Dialog box ok button text                       |
-|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                   |
-|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)   |
-|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box      |
+| Prop                              | Type        | Default     | Description                                                  |
+|-----------------------------------|-------------|-------------|--------------------------------------------------------------|
+|`message`                          |`HTML`       |`null`       |Dialog box content text                                       |
+|`ok`                               |`String`     |`null`       |Dialog box ok button text                                     |
+|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                                 |
+|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)                 |
+|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box                    |
 |`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen      |
 
 ### Methods
