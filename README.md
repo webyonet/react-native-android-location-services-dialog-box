@@ -61,7 +61,8 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     ok: "YES",
     cancel: "NO",
     enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
-    showDialog: true // false => Opens the Location access page directly
+    showDialog: true, // false => Opens the Location access page directly
+    openLocationServices: true // false => Directly catch method is called if location services are turned off
 }).then(function(success) {
     console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
 }).catch((error) => {
@@ -94,7 +95,8 @@ export default class LocationServiceTestPage extends Component {
             ok: "YES",
             cancel: "NO",
             enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
-            showDialog: true // false => Opens the Location access page directly
+            showDialog: true, // false => Opens the Location access page directly
+            openLocationServices: true // false => Directly catch method is called if location services are turned off
         }).catch(error => error);
 
         return Object.is(check.status, "enabled");
@@ -125,7 +127,8 @@ class SampleApp extends Component {
             ok: "YES",
             cancel: "NO",
             enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
-            showDialog: true // false => Opens the Location access page directly
+            showDialog: true, // false => Opens the Location access page directly
+            openLocationServices: true // false => Directly catch method is called if location services are turned off
         }).then(function(success) {
             // success => {alreadyEnabled: true, enabled: true, status: "enabled"} 
                 navigator.geolocation.getCurrentPosition((position) => {
