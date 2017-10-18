@@ -164,6 +164,7 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 |`cancel`                           |`String`     |`null`       |Dialog box cancel button text                   |
 |`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)   |
 |`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box      |
+|`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen      |
 
 ### Methods
 
