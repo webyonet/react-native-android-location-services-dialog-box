@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.text.Html;
+
 import com.facebook.react.bridge.*;
 
 class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener {
@@ -52,19 +53,22 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         WritableMap result = Arguments.createMap();
 
         Boolean isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!map.hasKey("enableHighAccuracy") || map.getBoolean("enableHighAccuracy")) {
+        if (map.hasKey("enableHighAccuracy") && map.getBoolean("enableHighAccuracy")) {
+            // High accuracy needed. Require NETWORK_PROVIDER.
+            isEnabled = isEnabled && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } else {
+            // Either highAccuracy is not a must which means any location will suffice
+            // or it is not specified which means again that any location will do.
             isEnabled = isEnabled || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         }
 
         if (!isEnabled) {
             if (activityResult || map.hasKey("openLocationServices") && !map.getBoolean("openLocationServices")) {
                 promiseCallback.reject(new Throwable("disabled"));
+            } else if (!map.hasKey("showDialog") || map.getBoolean("showDialog")) {
+                displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
             } else {
-                if (!map.hasKey("showDialog") || map.getBoolean("showDialog")) {
-                    displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
-                } else {
-                    newActivity(currentActivity);
-                }
+                newActivity(currentActivity);
             }
         } else {
             result.putString("status", "enabled");
