@@ -99,6 +99,12 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                         });
 
         alertDialog = builder.create();
+        if (!map.hasKey("preventOutSideTouch") || !map.getBoolean("preventOutSideTouch")){        
+        alertDialog.setCanceledOnTouchOutside(false);
+        }
+        if (!map.hasKey("preventBackClick") || !map.getBoolean("preventBackClick")){
+        alertDialog.setCancelable(false);
+        }
         alertDialog.show();
     }
 
