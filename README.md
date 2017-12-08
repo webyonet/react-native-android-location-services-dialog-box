@@ -71,7 +71,7 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     console.log(error.message); // error.message => "disabled"
 });
 
-BackHandler.addEventListener('hardwareBackPress', () => {
+BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
    LocationServicesDialogBox.forceCloseDialog();
 });
 ```
@@ -88,7 +88,7 @@ export default class LocationServiceTestPage extends Component {
         
         this.checkIsLocation().catch(error => error);
         
-        BackHandler.addEventListener('hardwareBackPress', () => {
+        BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
            LocationServicesDialogBox.forceCloseDialog();
         });
     }
@@ -148,7 +148,7 @@ class SampleApp extends Component {
             console.log(error.message);
         });
         
-        BackHandler.addEventListener('hardwareBackPress', () => {
+        BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
                LocationServicesDialogBox.forceCloseDialog();
         });
     }
@@ -184,7 +184,7 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 | Name                               | Return             | Return Value     |
 |------------------------------------|--------------------|------------------|
 |`checkLocationServicesIsEnabled`    | Promise            | Object           |
-|`forceCloseDialog`                  | void               | -                |
+|`forceCloseDialog` (optional using) | void               | -                |
 
 
 [![NPM](https://nodei.co/npm/react-native-android-location-services-dialog-box.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-android-location-services-dialog-box/)
