@@ -62,7 +62,9 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     cancel: "NO",
     enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
     showDialog: true, // false => Opens the Location access page directly
-    openLocationServices: true // false => Directly catch method is called if location services are turned off
+    openLocationServices: true, // false => Directly catch method is called if location services are turned off
+    preventOutSideTouch: false, //true => To prevent the location services window from closing when it is clicked outside
+    preventBackClick: false //true => To prevent the location services popup from closing when it is clicked back button
 }).then(function(success) {
     console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
 }).catch((error) => {
@@ -83,20 +85,24 @@ import LocationServicesDialogBox from "react-native-android-location-services-di
 export default class LocationServiceTestPage extends Component {
     constructor(props){
         super(props);
-        this.checkIsLocation();
+        
+        this.checkIsLocation().catch(error => error);
+        
         BackHandler.addEventListener('hardwareBackPress', () => {
            LocationServicesDialogBox.forceCloseDialog();
         });
     }
     
-    async checkIsLocation():Boolean {
+    async checkIsLocation():Promise {
         let check = await LocationServicesDialogBox.checkLocationServicesIsEnabled({
             message: "Use Location ?",
             ok: "YES",
             cancel: "NO",
             enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
             showDialog: true, // false => Opens the Location access page directly
-            openLocationServices: true // false => Directly catch method is called if location services are turned off
+            openLocationServices: true, // false => Directly catch method is called if location services are turned off
+            preventOutSideTouch: false, //true => To prevent the location services window from closing when it is clicked outside
+            preventBackClick: false //true => To prevent the location services popup from closing when it is clicked back button
         }).catch(error => error);
 
         return Object.is(check.status, "enabled");
@@ -128,7 +134,9 @@ class SampleApp extends Component {
             cancel: "NO",
             enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
             showDialog: true, // false => Opens the Location access page directly
-            openLocationServices: true // false => Directly catch method is called if location services are turned off
+            openLocationServices: true, // false => Directly catch method is called if location services are turned off
+            preventOutSideTouch: false, //true => To prevent the location services popup from closing when it is clicked outside
+            preventBackClick: false //true => To prevent the location services popup from closing when it is clicked back button
         }).then(function(success) {
             // success => {alreadyEnabled: true, enabled: true, status: "enabled"} 
                 navigator.geolocation.getCurrentPosition((position) => {
@@ -160,14 +168,16 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 
 ### Props
 
-| Prop                              | Type        | Default     | Description                                                  |
-|-----------------------------------|-------------|-------------|--------------------------------------------------------------|
-|`message`                          |`HTML`       |`null`       |Dialog box content text                                       |
-|`ok`                               |`String`     |`null`       |Dialog box ok button text                                     |
-|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                                 |
-|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)                 |
-|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box                    |
-|`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen      |
+| Prop                              | Type        | Default     | Description                                                                         |
+|-----------------------------------|-------------|-------------|-------------------------------------------------------------------------------------|
+|`message`                          |`HTML`       |`null`       |Dialog box content text                                                              |
+|`ok`                               |`String`     |`null`       |Dialog box ok button text                                                            |
+|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                                                        |
+|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)                                        |
+|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box                                           |
+|`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen                             |
+|`preventOutSideTouch` (optional)   |`Boolean`    |`true`       |To prevent the location services window from closing when it is clicked outside      |
+|`preventBackClick` (optional)      |`Boolean`    |`true`       |To prevent the location services popup from closing when it is clicked back button   |
 
 ### Methods
 

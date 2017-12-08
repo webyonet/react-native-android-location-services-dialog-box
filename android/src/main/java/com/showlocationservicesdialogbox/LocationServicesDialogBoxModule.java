@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.text.Html;
-
+import android.text.Spanned;
 import com.facebook.react.bridge.*;
 
 class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener {
@@ -82,7 +82,13 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     private static void displayPromptForEnablingGPS(final Activity activity, final ReadableMap configMap, final Promise promise) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder.setMessage(Html.fromHtml(configMap.getString("message")))
+        final Spanned message = (
+                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N ?
+                        Html.fromHtml(configMap.getString("message"), Html.FROM_HTML_MODE_LEGACY) :
+                        Html.fromHtml(configMap.getString("message"))
+        );
+
+        builder.setMessage(message)
                 .setPositiveButton(configMap.getString("ok"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int id) {
@@ -99,12 +105,15 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                         });
 
         alertDialog = builder.create();
-        if (!map.hasKey("preventOutSideTouch") || !map.getBoolean("preventOutSideTouch")){        
-        alertDialog.setCanceledOnTouchOutside(false);
+
+        if (!configMap.hasKey("preventOutSideTouch") || configMap.getBoolean("preventOutSideTouch")) {
+            alertDialog.setCanceledOnTouchOutside(false);
         }
-        if (!map.hasKey("preventBackClick") || !map.getBoolean("preventBackClick")){
-        alertDialog.setCancelable(false);
+
+        if (!configMap.hasKey("preventBackClick") || configMap.getBoolean("preventBackClick")) {
+            alertDialog.setCancelable(false);
         }
+
         alertDialog.show();
     }
 
