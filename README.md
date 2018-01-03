@@ -60,7 +60,7 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
     ok: "YES",
     cancel: "NO",
-    enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+    enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
     showDialog: true, // false => Opens the Location access page directly
     openLocationServices: true, // false => Directly catch method is called if location services are turned off
     preventOutSideTouch: false, //true => To prevent the location services window from closing when it is clicked outside
@@ -98,7 +98,7 @@ export default class LocationServiceTestPage extends Component {
             message: "Use Location ?",
             ok: "YES",
             cancel: "NO",
-            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
             showDialog: true, // false => Opens the Location access page directly
             openLocationServices: true, // false => Directly catch method is called if location services are turned off
             preventOutSideTouch: false, //true => To prevent the location services window from closing when it is clicked outside
@@ -132,7 +132,7 @@ class SampleApp extends Component {
             message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
             ok: "YES",
             cancel: "NO",
-            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+            enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
             showDialog: true, // false => Opens the Location access page directly
             openLocationServices: true, // false => Directly catch method is called if location services are turned off
             preventOutSideTouch: false, //true => To prevent the location services popup from closing when it is clicked outside
@@ -173,7 +173,7 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 |`message`                          |`HTML`       |`null`       |Dialog box content text                                                              |
 |`ok`                               |`String`     |`null`       |Dialog box ok button text                                                            |
 |`cancel`                           |`String`     |`null`       |Dialog box cancel button text                                                        |
-|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (ONLY GPS OR GPS AND NETWORK)                                        |
+|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (GPS OR NETWORK OR GPS AND NETWORK)                                        |
 |`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box                                           |
 |`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen                             |
 |`preventOutSideTouch` (optional)   |`Boolean`    |`true`       |To prevent the location services window from closing when it is clicked outside      |
