@@ -14,8 +14,8 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
     private Promise promiseCallback;
     private ReadableMap map;
     private Activity currentActivity;
+    private AlertDialog alertDialog;
     private static final int ENABLE_LOCATION_SERVICES = 1009;
-    private static AlertDialog alertDialog;
 
     LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -41,7 +41,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
 
     @ReactMethod
     public void forceCloseDialog() {
-        if (alertDialog != null) {
+        if (alertDialog != null && promiseCallback != null) {
             promiseCallback.reject(new Throwable("disabled"));
             alertDialog.cancel();
         }
