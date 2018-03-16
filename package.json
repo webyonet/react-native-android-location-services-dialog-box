@@ -1,14 +1,69 @@
 {
-  "name": "react-native-android-location-services-dialog-box",
-  "version": "2.4.4",
-  "description": "A react-native component for turn on the dialog box from android location services",
-  "author": "webyonet <webyonet@hotmail.com>",
-  "main": "index.js",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:webyonet/react-native-android-location-services-dialog-box.git"
+  "_args": [
+    [
+      {
+        "raw": "react-native-android-location-services-dialog-box",
+        "scope": null,
+        "escapedName": "react-native-android-location-services-dialog-box",
+        "name": "react-native-android-location-services-dialog-box",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/binzailani3136/myWork/celihack_new"
+    ]
+  ],
+  "_from": "react-native-android-location-services-dialog-box@latest",
+  "_id": "react-native-android-location-services-dialog-box@1.1.6",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/react-native-android-location-services-dialog-box",
+  "_nodeVersion": "4.5.0",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/react-native-android-location-services-dialog-box-1.1.6.tgz_1476585062026_0.7083152292761952"
   },
+  "_npmUser": {
+    "name": "webyonet",
+    "email": "webyonet@hotmail.com"
+  },
+  "_npmVersion": "3.10.7",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "react-native-android-location-services-dialog-box",
+    "scope": null,
+    "escapedName": "react-native-android-location-services-dialog-box",
+    "name": "react-native-android-location-services-dialog-box",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-android-location-services-dialog-box/-/react-native-android-location-services-dialog-box-1.1.6.tgz",
+  "_shasum": "ca9fe7a591067fd665496af9345b8cee3e099b93",
+  "_shrinkwrap": null,
+  "_spec": "react-native-android-location-services-dialog-box",
+  "_where": "/Users/binzailani3136/myWork/celihack_new",
+  "author": {
+    "name": "webyonet",
+    "email": "webyonet@hotmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/webyonet/react-native-android-location-services-dialog-box/issues"
+  },
+  "dependencies": {},
+  "description": "A react-native component for turn on the dialog box from android location services",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "ca9fe7a591067fd665496af9345b8cee3e099b93",
+    "tarball": "https://registry.npmjs.org/react-native-android-location-services-dialog-box/-/react-native-android-location-services-dialog-box-1.1.6.tgz"
+  },
+  "gitHead": "ba6ba21bf7b1819a8891a2aa95439a44e74334a3",
+  "homepage": "https://github.com/webyonet/react-native-android-location-services-dialog-box#readme",
   "keywords": [
     "react-component",
     "react-native",
@@ -21,7 +76,24 @@
     "react-native-location-services",
     "react-native-location-services-dialog-box"
   ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "webyonet",
+      "email": "webyonet@hotmail.com"
+    }
+  ],
+  "name": "react-native-android-location-services-dialog-box",
+  "optionalDependencies": {},
   "peerDependencies": {
-    "react-native": ">= 0.47.0"
-  }
+    "react-native": ">= 0.30.0"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/webyonet/react-native-android-location-services-dialog-box.git"
+  },
+  "scripts": {},
+  "version": "1.1.6"
 }
