@@ -79,7 +79,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         }
     }
 
-    private static void displayPromptForEnablingGPS(final Activity activity, final ReadableMap configMap, final Promise promise) {
+    private void displayPromptForEnablingGPS(final Activity activity, final ReadableMap configMap, final Promise promise) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         final Spanned message = (
@@ -117,7 +117,7 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         alertDialog.show();
     }
 
-    private static void newActivity(final Activity activity) {
+    private void newActivity(final Activity activity) {
         final String action = android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
         activity.startActivityForResult(new Intent(action), ENABLE_LOCATION_SERVICES);
     }
