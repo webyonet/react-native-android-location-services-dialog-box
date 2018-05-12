@@ -2,20 +2,21 @@ package com.showlocationservicesdialogbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.location.LocationManager;
 import android.text.Html;
 import android.text.Spanned;
 import com.facebook.react.bridge.*;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener {
     private Promise promiseCallback;
     private ReadableMap map;
     private Activity currentActivity;
-    private AlertDialog alertDialog;
     private static final int ENABLE_LOCATION_SERVICES = 1009;
+    private static AlertDialog alertDialog;
+    private Boolean isReceive = false;
+    private BroadcastReceiver providerReceiver = null;
 
     LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -47,6 +48,18 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         }
     }
 
+    @ReactMethod
+    public void stopListener() {
+        isReceive = false;
+        try {
+            if (providerReceiver != null) {
+                getReactApplicationContext().unregisterReceiver(providerReceiver);
+                providerReceiver = null;
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
     private void checkLocationService(Boolean activityResult) {
         if (currentActivity == null || map == null || promiseCallback == null) return;
         LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
@@ -71,6 +84,10 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
                 newActivity(currentActivity);
             }
         } else {
+            if (map.hasKey("providerListener") && map.getBoolean("providerListener")) {
+                startListener();
+            }
+
             result.putString("status", "enabled");
             result.putBoolean("enabled", true);
             result.putBoolean("alreadyEnabled", !activityResult);
@@ -122,11 +139,50 @@ class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule impleme
         activity.startActivityForResult(new Intent(action), ENABLE_LOCATION_SERVICES);
     }
 
+    private void startListener() {
+        try {
+            providerReceiver = new LocationProviderChangedReceiver();
+            getReactApplicationContext().registerReceiver(providerReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+            isReceive = true;
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void sendEvent() {
+        if (isReceive) {
+            LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
+            WritableMap params = Arguments.createMap();
+            if (locationManager != null) {
+                boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                params.putString("status", (enabled ? "enabled" : "disabled"));
+                params.putBoolean("enabled", enabled);
+
+                ReactContext reactContext = getReactApplicationContext();
+
+                if (reactContext != null) {
+                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("locationProviderStatusChange", params);
+                }
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == ENABLE_LOCATION_SERVICES) {
             currentActivity = activity;
             checkLocationService(true);
+        }
+    }
+
+    private final class LocationProviderChangedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (action != null && action.matches("android.location.PROVIDERS_CHANGED")) {
+                sendEvent();
+            }
         }
     }
 }

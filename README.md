@@ -58,7 +58,7 @@ Under `protected List<ReactPackage> getPackages() {`:
 ### Usage
 
 ```javascript
-import { BackHandler } from 'react-native';
+import { BackHandler, DeviceEventEmitter } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 LocationServicesDialogBox.checkLocationServicesIsEnabled({
@@ -68,8 +68,9 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
     showDialog: true, // false => Opens the Location access page directly
     openLocationServices: true, // false => Directly catch method is called if location services are turned off
-    preventOutSideTouch: false, //true => To prevent the location services window from closing when it is clicked outside
-    preventBackClick: false //true => To prevent the location services popup from closing when it is clicked back button
+    preventOutSideTouch: false, // true => To prevent the location services window from closing when it is clicked outside
+    preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
+    providerListener: false // true ==> Trigger locationProviderStatusChange listener when the location state changes
 }).then(function(success) {
     console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
 }).catch((error) => {
@@ -79,12 +80,20 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
 BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
    LocationServicesDialogBox.forceCloseDialog();
 });
+
+DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
+    console.log(status); //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
+});
+
+componentWillUnmount() {
+    LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
+}
 ```
 
 ### Usage And Example For Async Method `ES6`
 
 ```javascript
-import { BackHandler } from 'react-native';
+import { BackHandler, DeviceEventEmitter } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 export default class LocationServiceTestPage extends Component {
@@ -95,6 +104,10 @@ export default class LocationServiceTestPage extends Component {
         
         BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
            LocationServicesDialogBox.forceCloseDialog();
+        });
+        
+        DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
+            console.log(status); //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
         });
     }
     
@@ -107,11 +120,16 @@ export default class LocationServiceTestPage extends Component {
             showDialog: true, // false => Opens the Location access page directly
             openLocationServices: true, // false => Directly catch method is called if location services are turned off
             preventOutSideTouch: false, //true => To prevent the location services window from closing when it is clicked outside
-            preventBackClick: false //true => To prevent the location services popup from closing when it is clicked back button
+            preventBackClick: false, //true => To prevent the location services popup from closing when it is clicked back button
+            providerListener: true // true ==> Trigger "locationProviderStatusChange" listener when the location state changes
         }).catch(error => error);
 
         return Object.is(check.status, "enabled");
-    } 
+    }
+    
+    componentWillUnmount() {
+        LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
+    }   
 }
 ```
 
@@ -122,7 +140,8 @@ import {
     AppRegistry,
     Text,
     View,
-    BackHandler
+    BackHandler,
+    DeviceEventEmitter
 } from 'react-native';
 
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
@@ -141,7 +160,8 @@ class SampleApp extends Component {
             showDialog: true, // false => Opens the Location access page directly
             openLocationServices: true, // false => Directly catch method is called if location services are turned off
             preventOutSideTouch: false, //true => To prevent the location services popup from closing when it is clicked outside
-            preventBackClick: false //true => To prevent the location services popup from closing when it is clicked back button
+            preventBackClick: false, //true => To prevent the location services popup from closing when it is clicked back button
+            providerListener: true // true ==> Trigger "locationProviderStatusChange" listener when the location state changes
         }).then(function(success) {
             // success => {alreadyEnabled: true, enabled: true, status: "enabled"} 
                 navigator.geolocation.getCurrentPosition((position) => {
@@ -156,7 +176,15 @@ class SampleApp extends Component {
         BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
                LocationServicesDialogBox.forceCloseDialog();
         });
+        
+        DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
+            console.log(status); //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
+        });
     }
+    
+    componentWillUnmount() {
+        LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
+    } 
 
     render() {
         return (
@@ -173,16 +201,17 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 
 ### Props
 
-| Prop                              | Type        | Default     | Description                                                                         |
-|-----------------------------------|-------------|-------------|-------------------------------------------------------------------------------------|
-|`message`                          |`HTML`       |`null`       |Dialog box content text                                                              |
-|`ok`                               |`String`     |`null`       |Dialog box ok button text                                                            |
-|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                                                        |
-|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (GPS OR NETWORK OR GPS AND NETWORK)                                        |
-|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box                                           |
-|`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen                             |
-|`preventOutSideTouch` (optional)   |`Boolean`    |`true`       |To prevent the location services window from closing when it is clicked outside      |
-|`preventBackClick` (optional)      |`Boolean`    |`true`       |To prevent the location services popup from closing when it is clicked back button   |
+| Prop                              | Type        | Default     | Description                                                                              |
+|-----------------------------------|-------------|-------------|------------------------------------------------------------------------------------------|
+|`message`                          |`HTML`       |`null`       |Dialog box content text                                                                   |
+|`ok`                               |`String`     |`null`       |Dialog box ok button text                                                                 |
+|`cancel`                           |`String`     |`null`       |Dialog box cancel button text                                                             |
+|`enableHighAccuracy` (optional)    |`Boolean`    |`true`       |Provider switch (GPS OR NETWORK OR GPS AND NETWORK)                                       |
+|`showDialog` (optional)            |`Boolean`    |`true`       |Indicate whether to display the dialog box                                                |
+|`openLocationServices` (optional)  |`Boolean`    |`true`       |Indicate whether to display the location services screen                                  |
+|`preventOutSideTouch` (optional)   |`Boolean`    |`true`       |To prevent the location services window from closing when it is clicked outside           |
+|`preventBackClick` (optional)      |`Boolean`    |`true`       |To prevent the location services popup from closing when it is clicked back button        |
+|`providerListener` (optional)      |`Boolean`    |`false`      |Used to trigger `locationProviderStatusChange listener when the location state changes.  |
 
 ### Methods
 
@@ -190,6 +219,7 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 |------------------------------------|--------------------|------------------|
 |`checkLocationServicesIsEnabled`    | Promise            | Object           |
 |`forceCloseDialog` (optional using) | void               | -                |
+|`stopListener` (optional using)     | void               | Object           |
 
 
 [![NPM](https://nodei.co/npm/react-native-android-location-services-dialog-box.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-android-location-services-dialog-box/)
