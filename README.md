@@ -14,7 +14,9 @@ A react-native component for turn on the dialog box from android location servic
 
 #### Mostly automatic installation (recommended)
 
-1. `npm install react-native-android-location-services-dialog-box --save`
+1. `yarn add react-native-android-location-services-dialog-box`
+<br/>or<br/>
+`npm install react-native-android-location-services-dialog-box --save`
 2. `react-native link react-native-android-location-services-dialog-box`
 
 #### Manual Installation
