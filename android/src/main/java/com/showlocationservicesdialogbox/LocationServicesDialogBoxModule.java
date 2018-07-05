@@ -17,11 +17,11 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     private static AlertDialog alertDialog;
     private Boolean isReceive = false;
     private BroadcastReceiver providerReceiver = null;
-    private ReactApplicationContext reactContext;
+    private ReactApplicationContext RNContext;
 
     LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.reactContext = reactContext;
+        RNContext = reactContext;
         reactContext.addActivityEventListener(this);
     }
 
@@ -160,8 +160,8 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
                 params.putString("status", (enabled ? "enabled" : "disabled"));
                 params.putBoolean("enabled", enabled);
 
-                if (this.reactContext != null) {
-                    this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("locationProviderStatusChange", params);
+                if (RNContext != null) {
+                    RNContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("locationProviderStatusChange", params);
                 }
             }
         }

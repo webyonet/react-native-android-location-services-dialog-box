@@ -88,6 +88,7 @@ DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) 
 });
 
 componentWillUnmount() {
+    // used only when "providerListener" is enabled
     LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
 }
 ```
@@ -130,6 +131,7 @@ export default class LocationServiceTestPage extends Component {
     }
     
     componentWillUnmount() {
+        // used only when "providerListener" is enabled
         LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
     }   
 }
@@ -185,7 +187,8 @@ class SampleApp extends Component {
     }
     
     componentWillUnmount() {
-        LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
+        // used only when "providerListener" is enabled
+        LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener.
     } 
 
     render() {
