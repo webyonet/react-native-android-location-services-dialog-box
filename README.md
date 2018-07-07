@@ -23,19 +23,21 @@ A react-native component for turn on the dialog box from android location servic
 
 ##### Android
 
-1. `npm install react-native-android-location-services-dialog-box --save`
+1. `yarn add react-native-android-location-services-dialog-box`
+<br/>or<br/>
+`npm install react-native-android-location-services-dialog-box --save`
 2. Make the following additions to the given files:
 
 **android/settings.gradle**
 
-```
+```gradle
 include ':react-native-android-location-services-dialog-box'
 project(':react-native-android-location-services-dialog-box').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-location-services-dialog-box/android')
 ```
 
 **android/app/build.gradle**
 
-```
+```gradle
 dependencies {
    ...
    compile project(':react-native-android-location-services-dialog-box')
@@ -64,7 +66,7 @@ import { BackHandler, DeviceEventEmitter } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 LocationServicesDialogBox.checkLocationServicesIsEnabled({
-    message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
+    message: "<h2 style='color: #0af13e'>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
     ok: "YES",
     cancel: "NO",
     enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => GPS OR NETWORK PROVIDER
@@ -91,6 +93,32 @@ componentWillUnmount() {
     // used only when "providerListener" is enabled
     LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
 }
+```
+
+### Configure Colors
+
+```javascript
+import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
+
+LocationServicesDialogBox.checkLocationServicesIsEnabled({
+    message: "<font color='#f1eb0a'>Use Location ?</font>",
+    ok: "YES",
+    cancel: "NO",
+    style: {
+        backgroundColor: '#87a9ea',
+        
+        positiveButtonTextColor: '#ffffff',
+        positiveButtonBackgroundColor: '#5fba7d',
+        
+        negativeButtonTextColor: '#ffffff',
+        negativeButtonBackgroundColor: '#ba5f5f'
+    }
+}).then(function(success) {
+    console.log(success);
+}).catch((error) => {
+    console.log(error.message);
+});
+
 ```
 
 ### Usage And Example For Async Method `ES6`

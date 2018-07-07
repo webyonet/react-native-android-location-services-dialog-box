@@ -3,9 +3,13 @@ package com.showlocationservicesdialogbox;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.Window;
+import android.widget.Button;
 import com.facebook.react.bridge.*;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -68,6 +72,7 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         WritableMap result = Arguments.createMap();
 
         Boolean isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
         if (map.hasKey("enableHighAccuracy") && map.getBoolean("enableHighAccuracy")) {
             // High accuracy needed. Require NETWORK_PROVIDER.
             isEnabled = isEnabled && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -134,6 +139,39 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         }
 
         alertDialog.show();
+
+        if (configMap.hasKey("style")) {
+            colorAdjustment(alertDialog, configMap.getMap("style"));
+        }
+    }
+
+    private void colorAdjustment(AlertDialog dialog, ReadableMap colorMap) {
+        Window window = dialog.getWindow();
+
+        if (window != null) {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            if (colorMap.hasKey("backgroundColor")) {
+                window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorMap.getString("backgroundColor"))));
+            }
+
+            if (colorMap.hasKey("positiveButtonTextColor")) {
+                positiveButton.setTextColor(Color.parseColor(colorMap.getString("positiveButtonTextColor")));
+            }
+
+            if (colorMap.hasKey("positiveButtonBackgroundColor")) {
+                positiveButton.setBackgroundColor(Color.parseColor(colorMap.getString("positiveButtonBackgroundColor")));
+            }
+
+            if (colorMap.hasKey("negativeButtonTextColor")) {
+                negativeButton.setTextColor(Color.parseColor(colorMap.getString("negativeButtonTextColor")));
+            }
+
+            if (colorMap.hasKey("negativeButtonBackgroundColor")) {
+                negativeButton.setBackgroundColor(Color.parseColor(colorMap.getString("negativeButtonBackgroundColor")));
+            }
+        }
     }
 
     private void newActivity(final Activity activity) {
