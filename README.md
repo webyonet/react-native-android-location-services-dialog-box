@@ -104,7 +104,7 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     message: "<font color='#f1eb0a'>Use Location ?</font>",
     ok: "YES",
     cancel: "NO",
-    style: {
+    style: { // (optional)
         backgroundColor: '#87a9ea',
         
         positiveButtonTextColor: '#ffffff',
@@ -120,6 +120,7 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
 });
 
 ```
+<img width="529" alt="screen shot 2018-07-07 at 16 58 28" src="https://user-images.githubusercontent.com/973302/42411805-3246281a-820b-11e8-862c-8d8cd12d90f3.png"/>
 
 ### Usage And Example For Async Method `ES6`
 
@@ -245,6 +246,7 @@ AppRegistry.registerComponent('SampleApp', () => SampleApp);
 |`preventOutSideTouch` (optional)   |`Boolean`    |`true`       |To prevent the location services window from closing when it is clicked outside           |
 |`preventBackClick` (optional)      |`Boolean`    |`true`       |To prevent the location services popup from closing when it is clicked back button        |
 |`providerListener` (optional)      |`Boolean`    |`false`      |Used to trigger `locationProviderStatusChange listener when the location state changes.  |
+|`style` (optional)      |`Object`    |`{}`      |Change colors|
 
 ### Methods
 
