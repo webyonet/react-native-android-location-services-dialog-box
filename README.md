@@ -105,13 +105,13 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
     ok: "YES",
     cancel: "NO",
     style: { // (optional)
-        backgroundColor: '#87a9ea',
+        backgroundColor: '#87a9ea',// (optional)
         
-        positiveButtonTextColor: '#ffffff',
-        positiveButtonBackgroundColor: '#5fba7d',
+        positiveButtonTextColor: '#ffffff',// (optional)
+        positiveButtonBackgroundColor: '#5fba7d',// (optional)
         
-        negativeButtonTextColor: '#ffffff',
-        negativeButtonBackgroundColor: '#ba5f5f'
+        negativeButtonTextColor: '#ffffff',// (optional)
+        negativeButtonBackgroundColor: '#ba5f5f'// (optional)
     }
 }).then(function(success) {
     console.log(success);
