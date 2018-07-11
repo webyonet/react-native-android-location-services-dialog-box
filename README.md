@@ -82,6 +82,7 @@ LocationServicesDialogBox.checkLocationServicesIsEnabled({
 });
 
 BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
+   //do not use this method if you are using navigation."preventBackClick: false" is already doing the same thing.
    LocationServicesDialogBox.forceCloseDialog();
 });
 
@@ -133,10 +134,6 @@ export default class LocationServiceTestPage extends Component {
         super(props);
         
         this.checkIsLocation().catch(error => error);
-        
-        BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
-           LocationServicesDialogBox.forceCloseDialog();
-        });
         
         DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
             console.log(status); //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
@@ -204,10 +201,6 @@ class SampleApp extends Component {
             }.bind(this)
         ).catch((error) => {
             console.log(error.message);
-        });
-        
-        BackHandler.addEventListener('hardwareBackPress', () => { //(optional) you can use it if you need it
-               LocationServicesDialogBox.forceCloseDialog();
         });
         
         DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
