@@ -1,6 +1,6 @@
 {
   "name": "react-native-android-location-services-dialog-box",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "A react-native component for turn on the dialog box from android location services",
   "author": "webyonet <webyonet@hotmail.com>",
   "main": "index.js",
@@ -22,6 +22,6 @@
     "react-native-location-services-dialog-box"
   ],
   "peerDependencies": {
-    "react-native": ">= 0.47.0"
+    "react-native": ">= 0.56.0"
   }
 }
