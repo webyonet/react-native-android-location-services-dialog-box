@@ -70,16 +70,7 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
         WritableMap result = Arguments.createMap();
 
-        Boolean isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        if (map.hasKey("enableHighAccuracy") && map.getBoolean("enableHighAccuracy")) {
-            // High accuracy needed. Require NETWORK_PROVIDER.
-            isEnabled = isEnabled && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } else {
-            // Either highAccuracy is not a must which means any location will suffice
-            // or it is not specified which means again that any location will do.
-            isEnabled = isEnabled || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        }
+        Boolean isEnabled = this.isEnabled(locationManager);
 
         if (!isEnabled) {
             if (activityResult || map.hasKey("openLocationServices") && !map.getBoolean("openLocationServices")) {
@@ -187,12 +178,28 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         }
     }
 
+    private Boolean isEnabled(LocationManager locationManager) {
+        Boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (map != null) {
+            if (map.hasKey("enableHighAccuracy") && map.getBoolean("enableHighAccuracy")) {
+                // High accuracy needed. Require NETWORK_PROVIDER.
+                enabled = enabled && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            } else {
+                // Either highAccuracy is not a must which means any location will suffice
+                // or it is not specified which means again that any location will do.
+                enabled = enabled || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            }
+        }
+
+        return enabled;
+    }
+
     private void sendEvent() {
         if (isReceive) {
             LocationManager locationManager = (LocationManager) currentActivity.getSystemService(Context.LOCATION_SERVICE);
             WritableMap params = Arguments.createMap();
             if (locationManager != null) {
-                boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                boolean enabled = this.isEnabled(locationManager);
 
                 params.putString("status", (enabled ? "enabled" : "disabled"));
                 params.putBoolean("enabled", enabled);
