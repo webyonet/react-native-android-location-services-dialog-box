@@ -75,6 +75,9 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         if (!isEnabled) {
             if (activityResult || map.hasKey("openLocationServices") && !map.getBoolean("openLocationServices")) {
                 promiseCallback.reject(new Throwable("disabled"));
+                if (map.hasKey("providerListener") && map.getBoolean("providerListener")) {
+                    startListener();
+                }
             } else if (!map.hasKey("showDialog") || map.getBoolean("showDialog")) {
                 displayPromptForEnablingGPS(currentActivity, map, promiseCallback);
             } else {
