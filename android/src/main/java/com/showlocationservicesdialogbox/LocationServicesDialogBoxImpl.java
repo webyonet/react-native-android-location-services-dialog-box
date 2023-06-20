@@ -2,18 +2,30 @@ package com.showlocationservicesdialogbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+
 import android.content.*;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
 import android.location.LocationManager;
+
 import android.text.Html;
 import android.text.Spanned;
+
 import android.view.Window;
 import android.widget.Button;
+
 import com.facebook.react.bridge.*;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+import android.util.Log;
+
+public class LocationServicesDialogBoxImpl implements ActivityEventListener {
+
+    public static final String NAME = "LocationServicesDialogBox";
+
+    static ReactApplicationContext RCTContext = null;
+
     private Promise promiseCallback;
     private ReadableMap map;
     private Activity currentActivity;
@@ -21,32 +33,25 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     private static AlertDialog alertDialog;
     private Boolean isReceive = false;
     private BroadcastReceiver providerReceiver = null;
-    private ReactApplicationContext RNContext;
 
-    LocationServicesDialogBoxModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-        RNContext = reactContext;
-        reactContext.addActivityEventListener(this);
+    public LocationServicesDialogBoxImpl(ReactApplicationContext reactContext) {
+        RCTContext = reactContext;
+        RCTContext.addActivityEventListener(this);
     }
 
-    @Override
-    public void onNewIntent(Intent intent) {
-    }
+    ///
+    // API
+    //
 
-    @Override
-    public String getName() {
-        return "LocationServicesDialogBox";
-    }
-
-    @ReactMethod
     public void checkLocationServicesIsEnabled(ReadableMap configMap, Promise promise) {
         promiseCallback = promise;
         map = configMap;
-        currentActivity = getCurrentActivity();
-        checkLocationService(false);
+        currentActivity = RCTContext.getCurrentActivity();
+        if (currentActivity != null) {
+            checkLocationService(false);
+        }
     }
 
-    @ReactMethod
     public void forceCloseDialog() {
         try {
             if (alertDialog != null && alertDialog.isShowing() && promiseCallback != null) {
@@ -55,17 +60,20 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
         } catch (Exception ignored) {}
     }
 
-    @ReactMethod
     public void stopListener() {
         isReceive = false;
         try {
             if (providerReceiver != null) {
-                getReactApplicationContext().unregisterReceiver(providerReceiver);
+                RCTContext.unregisterReceiver(providerReceiver);
                 providerReceiver = null;
             }
         } catch (Exception ignored) {
         }
     }
+
+    ///
+    // Internals
+    //
 
     private void checkLocationService(Boolean activityResult) {
         if (currentActivity == null || map == null || promiseCallback == null) return;
@@ -177,7 +185,7 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
     private void startListener() {
         try {
             providerReceiver = new LocationProviderChangedReceiver();
-            getReactApplicationContext().registerReceiver(providerReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+            RCTContext.registerReceiver(providerReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
             isReceive = true;
         } catch (Exception ignored) {
         }
@@ -209,12 +217,15 @@ public class LocationServicesDialogBoxModule extends ReactContextBaseJavaModule 
                 params.putString("status", (enabled ? "enabled" : "disabled"));
                 params.putBoolean("enabled", enabled);
 
-                if (RNContext != null) {
-                    RNContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("locationProviderStatusChange", params);
+                if (RCTContext != null) {
+                    RCTContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("locationProviderStatusChange", params);
                 }
             }
         }
     }
+
+    @Override
+    public void onNewIntent(Intent intent) { }
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
