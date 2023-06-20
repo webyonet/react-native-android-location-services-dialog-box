@@ -1,2 +1,3 @@
-import { NativeModules } from 'react-native';
-export default NativeModules.LocationServicesDialogBox;
+import NativeLocationServicesDialogBox from './NativeLocationServicesDialogBox';
+
+export default NativeLocationServicesDialogBox;
